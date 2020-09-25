@@ -28,7 +28,7 @@ function handleResponse(
 	if (response.ok)
 		location.href = "/";
 	else
-		setErrorText(
+		showError(
 			response.status === 401
 			&&
 			"Log in failed, please check your email address and password."
