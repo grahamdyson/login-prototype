@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<script defer type="text/javascript" src="./login.js"></script>
+		<title>Login - Login Prototype</title>
+	</head>
+	<body>
+		<form id="login-form">
+			<div class="email">
+				<label for="email">username / email address:</label>
+				<input id="email" required type="email">
+			</div>
+			<div class="password">
+				<label for="password">password:</label>
+				<input id="password" required type="password">
+			</div>
+			<input class="login-button" onclick="login()" type="button" value="log in">
+			<div id="login-error"></div>
+		</form>
+	</body>
+</html>
