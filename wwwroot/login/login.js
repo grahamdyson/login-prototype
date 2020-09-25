@@ -1,3 +1,10 @@
+const redirectUrl = new URLSearchParams(window.location.search).get("redirect");
+
+if (redirectUrl) {
+	document.getElementById("login-redirect").innerText = redirectUrl;
+	document.getElementById("login-access-restricted").className = "has-redirect";
+}
+
 function login() {
 	if (document.getElementById("login-form").reportValidity())
 		fetch(
@@ -26,7 +33,7 @@ function handleResponse(
 	response,
 ) {
 	if (response.ok)
-		location.href = "/";
+		location.href = redirectUrl || "/";
 	else
 		showError(
 			response.status === 401

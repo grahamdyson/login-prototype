@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<link href="./redirect.css" rel="stylesheet" />
 		<meta charset="UTF-8">
 		<script defer type="text/javascript" src="./login.js"></script>
 		<title>Login - Login Prototype</title>
 	</head>
 	<body>
 		<form id="login-form">
+			<div class="no-redirect" id="login-access-restricted">
+				Access to <span id="login-redirect">the requested page</span> is restricted to logged in users.
+			</div>
 			<div class="email">
 				<label for="email">username / email address:</label>
 				<input id="email" required type="email">

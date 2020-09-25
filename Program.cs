@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -65,7 +68,7 @@ namespace Company.Users.LoginPrototype
 					}
 					else
 					{
-						context.Response.StatusCode = 401;
+						RedirectToLogin();
 						return true;
 					}
 				}
@@ -74,6 +77,12 @@ namespace Company.Users.LoginPrototype
 
 				bool IsRestricted() =>
 					context.Request.Path.Value.StartsWith("/restricted/");
+
+				void RedirectToLogin() =>
+					context.Response.Redirect(
+						QueryHelpers.AddQueryString(
+							"/login/",
+							new Dictionary<string, string>() { ["redirect"] = context.Request.Path.Value }));
 			}
 		}
 	}
