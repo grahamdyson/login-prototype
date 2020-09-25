@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Company.Users.LoginPrototype
@@ -15,11 +17,32 @@ namespace Company.Users.LoginPrototype
 
 		class Startup
 		{
+			public void ConfigureServices(
+				IServiceCollection services)
+			{
+				services
+				.AddAuthentication(
+					CookieAuthenticationDefaults.AuthenticationScheme
+				)
+				.AddCookie(
+					builder => {
+						builder.Cookie.SameSite = SameSiteMode.Strict;
+						builder.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+					});
+
+				services
+				.AddControllers();
+			}
+
 			public void Configure(
 				IApplicationBuilder application,
 				IWebHostEnvironment environment)
 			{
 				application.UseHttpsRedirection();
+				application.UseAuthentication();
+				
+				application.UseRouting();
+				application.UseEndpoints(endpoints => endpoints.MapControllers());
 
 				application.Use(
 					async (context, next) => {
@@ -40,8 +63,9 @@ namespace Company.Users.LoginPrototype
 						context.Response.Headers.Add("Cache-Control", "no-store");
 						return false;
 					}
-					else {
-						context.Response.StatusCode = 403;
+					else
+					{
+						context.Response.StatusCode = 401;
 						return true;
 					}
 				}
