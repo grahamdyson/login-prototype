@@ -5,22 +5,31 @@ if (redirectUrl) {
 	document.getElementById("login-access-restricted").className = "has-redirect";
 }
 
-function login() {
-	if (document.getElementById("login-form").reportValidity())
+document.getElementById("login-form")
+.addEventListener(
+	"submit",
+	event => {
+		event.preventDefault();
+
 		fetch(
 			"/authentication",
-			createRequest(),
+			createRequestFromFormData(
+				new FormData(event.target),
+			),
 		)
 		.then(handleResponse)
 		.catch(error => showError());
-}
+	},
+);
 
-function createRequest() {
+function createRequestFromFormData(
+	fromData,
+) {
 	return {
 		body:
 			JSON.stringify({
-				email: document.getElementById("email").value,
-				password: document.getElementById("password").value,
+				email: fromData.get("email"),
+				password: fromData.get("password"),
 			}),
 		method:
 			"POST",
